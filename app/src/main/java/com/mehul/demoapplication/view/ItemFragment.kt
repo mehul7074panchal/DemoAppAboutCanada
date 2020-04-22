@@ -160,14 +160,15 @@ class ItemFragment : Fragment() {
 
 
     fun getListItem(json: JSONObject): ArrayList<Item> {
-        title = json.optString("title")
+        title = if (json.isNull("title")) "" else json.optString("title", "")
         listItem.clear()
         val jsonArray = json.getJSONArray("rows")
         for (i in 0 until jsonArray.length()) {
             val obj = jsonArray.getJSONObject(i)
             val item = Item()
-            item.description = obj.optString("description")
-            item.title = obj.optString("title")
+            item.description =
+                if (obj.isNull("description")) "" else obj.optString("description", "")
+            item.title = if (obj.isNull("title")) "" else obj.optString("title", "")
             item.imageHref = obj.optString("imageHref")
             listItem.add(item)
 
